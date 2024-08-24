@@ -11,19 +11,14 @@ class SubjectCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      onTap: () {},
-      child: Card(
-        margin: const EdgeInsets.all(10),
-        child: ListTile(
-          title: Text(subject.name),
-          trailing: Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              _PopupMenuButton(subject: subject),
-            ],
-          ),
-        ),
+    return Card(
+      margin: const EdgeInsets.all(10),
+      child: ListTile(
+        title: Text(subject.name),
+        trailing: _PopupMenuButton(subject: subject),
+        onTap: () {
+          // TODO: add navigation to categories here
+        },
       ),
     );
   }
@@ -40,14 +35,13 @@ class _PopupMenuButton extends StatelessWidget {
       itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
         PopupMenuItem<String>(
           value: "Edit",
-          onTap: () {
-            _onTapEdit(context);
-          },
           child: const Text("Edit"),
+          onTap: () => _onTapEdit(context),
         ),
-        const PopupMenuItem<String>(
+        PopupMenuItem<String>(
           value: "Delete",
-          child: Text("Delete"),
+          child: const Text("Delete"),
+          onTap: () => _onTapDelete(context),
         ),
       ],
     );
@@ -66,7 +60,41 @@ class _PopupMenuButton extends StatelessWidget {
               context
                   .read<SubjectsBloc>()
                   .add(SubjectUpdatedEvent(subject.id!, name));
+              Navigator.of(context).pop();
             },
+          ),
+        );
+      },
+    );
+  }
+
+  void _onTapDelete(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (_) {
+        return BlocProvider.value(
+          value: context.read<SubjectsBloc>(),
+          child: AlertDialog(
+            title: const Text("Delete Subject"),
+            content:
+                const Text("Are you sure you want to delete this subject?"),
+            actions: [
+              TextButton(
+                child: const Text("Yes"),
+                onPressed: () {
+                  context
+                      .read<SubjectsBloc>()
+                      .add(SubjectDeletedEvent(subject.id!));
+                  Navigator.of(context).pop();
+                },
+              ),
+              TextButton(
+                child: const Text("Cancel"),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+            ],
           ),
         );
       },

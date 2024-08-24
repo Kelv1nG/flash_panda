@@ -31,6 +31,7 @@ class AddSubjectButton extends StatelessWidget {
             title: label,
             onSubmit: (name) {
               context.read<SubjectsBloc>().add(SubjectAddedEvent(name));
+              Navigator.of(context).pop();
             },
           ),
         );
