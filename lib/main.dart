@@ -1,6 +1,6 @@
+import "package:flash_cards/modules/subjects/subjects.dart";
 import "package:flutter/material.dart";
 import "package:flash_cards/core/database.dart";
-import 'package:flash_cards/views/subjects/subject_view.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -18,7 +18,7 @@ class App extends StatelessWidget {
       theme: ThemeData.dark(),
       home: Scaffold(
         appBar: AppBar(),
-        body: const SubjectView(),
+        body: const SubjectsPage(),
       ),
     );
   }

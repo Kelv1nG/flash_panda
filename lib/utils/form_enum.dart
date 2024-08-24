@@ -1,4 +1,0 @@
-enum FormEnum {
-  create,
-  update,
-}
