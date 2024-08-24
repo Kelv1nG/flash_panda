@@ -18,8 +18,13 @@ class SubjectsBloc extends Bloc<SubjectEvent, SubjectsState> {
     SubjectRetrieveListEvent event,
     Emitter<SubjectsState> emit,
   ) async {
-    final subjects = await listSubjects();
-    emit(SubjectsState(status: SubjectsStatus.success, subjects: subjects));
+    final subjectList = await listSubjects();
+    emit(
+      SubjectsState(
+        status: Status.success,
+        subjectList: subjectList,
+      ),
+    );
   }
 
   Future<void> _onSubjectAdded(
@@ -29,8 +34,14 @@ class SubjectsBloc extends Bloc<SubjectEvent, SubjectsState> {
     final subject = Subject(name: event.name);
     await addSubject(subject);
 
-    final subjects = await listSubjects();
-    emit(SubjectsState(status: SubjectsStatus.success, subjects: subjects));
+    final subjectList = await listSubjects();
+    emit(
+      SubjectsState(
+          status: Status.success,
+          subjectList: subjectList,
+          action: Action.created,
+          subject: subject),
+    );
   }
 
   Future<void> _onSubjectUpdated(
@@ -40,8 +51,14 @@ class SubjectsBloc extends Bloc<SubjectEvent, SubjectsState> {
     final subject = Subject(id: event.id, name: event.name);
     await updateSubject(subject);
 
-    final subjects = await listSubjects();
-    emit(SubjectsState(status: SubjectsStatus.success, subjects: subjects));
+    final subjectList = await listSubjects();
+    emit(
+      SubjectsState(
+          status: Status.success,
+          subjectList: subjectList,
+          action: Action.updated,
+          subject: subject),
+    );
   }
 
   Future<void> _onSubjectDeleted(
@@ -50,7 +67,12 @@ class SubjectsBloc extends Bloc<SubjectEvent, SubjectsState> {
   ) async {
     await deleteSubject(event.id);
 
-    final subjects = await listSubjects();
-    emit(SubjectsState(status: SubjectsStatus.success, subjects: subjects));
+    final subjectList = await listSubjects();
+    emit(
+      SubjectsState(
+          status: Status.success,
+          subjectList: subjectList,
+          action: Action.deleted),
+    );
   }
 }
