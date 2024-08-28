@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flash_cards/models/subject.dart';
+import 'package:flash_cards/repositories/subject/subject.dart';
 import './subject_form.dart';
 
 class SubjectFormDialog extends StatelessWidget {

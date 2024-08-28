@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flash_cards/modules/subjects/bloc/subjects_bloc.dart';
-import 'package:flash_cards/models/subject.dart';
+import 'package:flash_cards/repositories/subject/subject.dart';
 import './subject_form_dialog.dart';
 
 class SubjectCard extends StatelessWidget {
