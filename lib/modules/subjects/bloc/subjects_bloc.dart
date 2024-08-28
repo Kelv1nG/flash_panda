@@ -1,10 +1,11 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:flash_cards/models/subject.dart';
-import 'package:flash_cards/repository/subject.dart';
+import 'package:flash_cards/repositories/subject/subject.dart';
 
 part 'subjects_event.dart';
 part 'subjects_state.dart';
+
+final repo = SubjectRepositoryRemote(null);
 
 class SubjectsBloc extends Bloc<SubjectEvent, SubjectsState> {
   SubjectsBloc() : super(const SubjectsState()) {
@@ -18,7 +19,7 @@ class SubjectsBloc extends Bloc<SubjectEvent, SubjectsState> {
     SubjectRetrieveListEvent event,
     Emitter<SubjectsState> emit,
   ) async {
-    final subjectList = await listSubjects();
+    final subjectList = await repo.listSubjects();
     emit(
       SubjectsState(
         status: Status.success,
@@ -32,9 +33,9 @@ class SubjectsBloc extends Bloc<SubjectEvent, SubjectsState> {
     Emitter<SubjectsState> emit,
   ) async {
     final subject = Subject(name: event.name);
-    await addSubject(subject);
+    await repo.addSubject(subject);
 
-    final subjectList = await listSubjects();
+    final subjectList = await repo.listSubjects();
     emit(
       SubjectsState(
           status: Status.success,
@@ -49,9 +50,9 @@ class SubjectsBloc extends Bloc<SubjectEvent, SubjectsState> {
     Emitter<SubjectsState> emit,
   ) async {
     final subject = Subject(id: event.id, name: event.name);
-    await updateSubject(subject);
+    await repo.updateSubject(subject);
 
-    final subjectList = await listSubjects();
+    final subjectList = await repo.listSubjects();
     emit(
       SubjectsState(
           status: Status.success,
@@ -65,9 +66,9 @@ class SubjectsBloc extends Bloc<SubjectEvent, SubjectsState> {
     SubjectDeletedEvent event,
     Emitter<SubjectsState> emit,
   ) async {
-    await deleteSubject(event.id);
+    await repo.deleteSubject(event.id);
 
-    final subjectList = await listSubjects();
+    final subjectList = await repo.listSubjects();
     emit(
       SubjectsState(
           status: Status.success,
