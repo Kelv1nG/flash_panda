@@ -1,6 +1,7 @@
 import "package:flutter/material.dart";
 import "package:flutter_bloc/flutter_bloc.dart";
 import "package:flash_cards/modules/subjects/subjects.dart";
+import "package:flash_cards/repositories/subject_repository/subject_repository.dart";
 
 class SubjectsPage extends StatelessWidget {
   const SubjectsPage({super.key});
@@ -8,8 +9,9 @@ class SubjectsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider<SubjectsBloc>(
-      create: (BuildContext context) =>
-          SubjectsBloc()..add(const SubjectRetrieveListEvent()),
+      create: (BuildContext context) => SubjectsBloc(
+        context.read<SubjectRepositoryRemote>(),
+      )..add(const SubjectRetrieveListEvent()),
       child: const SubjectsView(),
     );
   }

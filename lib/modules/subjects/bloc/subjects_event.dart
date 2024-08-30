@@ -11,23 +11,23 @@ final class SubjectRetrieveListEvent extends SubjectEvent {
   const SubjectRetrieveListEvent();
 }
 
-final class SubjectAddedEvent extends SubjectEvent {
-  const SubjectAddedEvent(this.name);
+final class SubjectCreateEvent extends SubjectEvent {
+  const SubjectCreateEvent(this.subjectCreateData);
 
-  final String name;
+  final SubjectCreateDTO subjectCreateData;
 
   @override
-  List<String> get props => [name];
+  List<Object> get props => [subjectCreateData];
 }
 
 final class SubjectUpdatedEvent extends SubjectEvent {
-  const SubjectUpdatedEvent(this.id, this.name);
+  const SubjectUpdatedEvent(this.subjectId, this.subjectUpdateData);
 
-  final int id;
-  final String name;
+  final int subjectId;
+  final SubjectUpdateDTO subjectUpdateData;
 
   @override
-  List<Object> get props => [id, name];
+  List<Object> get props => [subjectId, subjectUpdateData];
 }
 
 final class SubjectDeletedEvent extends SubjectEvent {

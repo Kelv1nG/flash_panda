@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flash_cards/models/subject.dart';
+import 'package:flash_cards/repositories/subject_repository/subject_repository.dart';
 
 class SubjectFormPage extends StatelessWidget {
   SubjectFormPage({super.key, this.subject, required this.onSubmit})
