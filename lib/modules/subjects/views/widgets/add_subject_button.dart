@@ -1,3 +1,4 @@
+import 'package:flash_cards/repositories/subject_repository/schema/subject.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flash_cards/modules/subjects/bloc/subjects_bloc.dart';
@@ -30,7 +31,11 @@ class AddSubjectButton extends StatelessWidget {
           child: SubjectFormDialog(
             title: label,
             onSubmit: (name) {
-              context.read<SubjectsBloc>().add(SubjectAddedEvent(name));
+              context.read<SubjectsBloc>().add(
+                SubjectCreateEvent(
+                  SubjectCreateDTO(name)
+                ),
+              );
               Navigator.of(context).pop();
             },
           ),

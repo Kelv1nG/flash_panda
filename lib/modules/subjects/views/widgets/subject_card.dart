@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flash_cards/modules/subjects/bloc/subjects_bloc.dart';
-import 'package:flash_cards/repositories/subject/subject.dart';
+import 'package:flash_cards/repositories/subject_repository/subject_repository.dart';
 import './subject_form_dialog.dart';
 
 class SubjectCard extends StatelessWidget {
@@ -56,10 +56,13 @@ class _PopupMenuButton extends StatelessWidget {
           child: SubjectFormDialog(
             title: "Edit Subject",
             subject: subject,
-            onSubmit: (name) {
-              context
-                  .read<SubjectsBloc>()
-                  .add(SubjectUpdatedEvent(subject.id!, name));
+            onSubmit: (String name) {
+              context.read<SubjectsBloc>().add(
+                    SubjectUpdatedEvent(
+                      subject.id!,
+                      SubjectUpdateDTO(name),
+                    ),
+                  );
               Navigator.of(context).pop();
             },
           ),
