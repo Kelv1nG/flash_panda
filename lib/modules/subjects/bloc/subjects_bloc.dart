@@ -1,25 +1,25 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:flash_cards/repositories/subject/subject.dart';
+import 'package:flash_cards/repositories/subject_repository/subject_repository.dart';
 
 part 'subjects_event.dart';
 part 'subjects_state.dart';
 
-final repo = SubjectRepositoryRemote(null);
-
 class SubjectsBloc extends Bloc<SubjectEvent, SubjectsState> {
-  SubjectsBloc() : super(const SubjectsState()) {
+  SubjectsBloc(this.subjectRepository) : super(const SubjectsState()) {
     on<SubjectRetrieveListEvent>(_onSubjectRetrieveListEvent);
-    on<SubjectAddedEvent>(_onSubjectAdded);
+    on<SubjectCreateEvent>(_onSubjectAdded);
     on<SubjectUpdatedEvent>(_onSubjectUpdated);
     on<SubjectDeletedEvent>(_onSubjectDeleted);
   }
+
+  final SubjectRepositoryInterface subjectRepository;
 
   Future<void> _onSubjectRetrieveListEvent(
     SubjectRetrieveListEvent event,
     Emitter<SubjectsState> emit,
   ) async {
-    final subjectList = await repo.listSubjects();
+    final subjectList = await subjectRepository.listSubjects();
     emit(
       SubjectsState(
         status: Status.success,
@@ -29,13 +29,12 @@ class SubjectsBloc extends Bloc<SubjectEvent, SubjectsState> {
   }
 
   Future<void> _onSubjectAdded(
-    SubjectAddedEvent event,
+    SubjectCreateEvent event,
     Emitter<SubjectsState> emit,
   ) async {
-    final subject = Subject(name: event.name);
-    await repo.addSubject(subject);
-
-    final subjectList = await repo.listSubjects();
+    final subject =
+        await subjectRepository.createSubject(event.subjectCreateData);
+    final subjectList = await subjectRepository.listSubjects();
     emit(
       SubjectsState(
           status: Status.success,
@@ -49,10 +48,9 @@ class SubjectsBloc extends Bloc<SubjectEvent, SubjectsState> {
     SubjectUpdatedEvent event,
     Emitter<SubjectsState> emit,
   ) async {
-    final subject = Subject(id: event.id, name: event.name);
-    await repo.updateSubject(subject);
-
-    final subjectList = await repo.listSubjects();
+    final subject = await subjectRepository.updateSubject(
+        event.subjectId, event.subjectUpdateData);
+    final subjectList = await subjectRepository.listSubjects();
     emit(
       SubjectsState(
           status: Status.success,
@@ -66,9 +64,9 @@ class SubjectsBloc extends Bloc<SubjectEvent, SubjectsState> {
     SubjectDeletedEvent event,
     Emitter<SubjectsState> emit,
   ) async {
-    await repo.deleteSubject(event.id);
+    await subjectRepository.deleteSubject(event.id);
 
-    final subjectList = await repo.listSubjects();
+    final subjectList = await subjectRepository.listSubjects();
     emit(
       SubjectsState(
           status: Status.success,
